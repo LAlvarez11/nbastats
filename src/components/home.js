@@ -1,12 +1,13 @@
 import React,{Component} from 'react';
 import Header from './header'
-import Body from './body';
+import PPGTile from '../containers/PPGTiles'
+
 class Home extends Component {
 
     render() { 
         return <div>
             <Header />
-            <Body />
+            <PPGTile />
           </div>;
     }
 }

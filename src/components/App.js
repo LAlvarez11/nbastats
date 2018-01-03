@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Home from './components/home';
+import Home from './home';
 import "bulma/css/bulma.css";
 import "font-awesome/css/font-awesome.min.css";
 
