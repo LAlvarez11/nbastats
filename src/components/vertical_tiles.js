@@ -1,16 +1,13 @@
 import React, { Component } from "react";
 import axios from 'axios';
-import {USERNAME,PASSWORD,ROOT_URL} from '../credentials';
+import {ROOT_URL,config} from '../credentials';
+import HorizontalTile from './horizontal_tile';
 
-const config = {
-  headers: { Authorization: "Basic " + btoa(USERNAME + ":" + PASSWORD) }
-};
 
 class VerticalTile extends Component {
 
   constructor(props){
     super(props);
-    this.state = { image: "https://cdn2.lobster.media/assets/default_avatar-afa14913913cc117c73f1ac69496d74e.png" };
     this.fetchPlayerImage= this.fetchPlayerImage.bind(this);
     this.renderTiles = this.renderTiles.bind(this);
   }
@@ -20,10 +17,13 @@ class VerticalTile extends Component {
     axios.get(ACTIVE_PLAYERS_URL,config).then(response => {
       const playerData = response.data.activeplayers.playerentry;
       console.log(playerData[0].player);
-      const image = playerData[0].player.officialImageSrc;
-      this.setState({
-        image: image
-      })
+      let image = playerData[0].player.officialImageSrc;
+      console.log(image)
+      if(!image)
+        image = "https://cdn2.lobster.media/assets/default_avatar-afa14913913cc117c73f1ac69496d74e.png";
+      
+      console.log(image); 
+      return image;
       });
   }
 
@@ -36,16 +36,14 @@ class VerticalTile extends Component {
     const playerTeam = team.City + " " + team.Name;
     const position = player.Position;
     const ppg = stats.PtsPerGame["#text"];
-
-    const imgSrc = this.fetchPlayerImage(ID); 
-
+    
     return (
       <div key={ID} className="tile  is-child  ">
         <div className="tile is-child notification">
           <article className="media">
             <div className="media-left">
               <figure className="image is-64x64">
-                <img src={this.state.image} alt={name} />
+                <img src={this.fetchPlayerImage(ID)} alt={name} />
               </figure>
             </div>
             <div className="media-content">
@@ -74,6 +72,7 @@ class VerticalTile extends Component {
             </div>
           </div>
         </div>
+        <HorizontalTile />
       </div>
     );
   }
